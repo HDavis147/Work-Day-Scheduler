@@ -10,7 +10,7 @@ This application is a scheduler that you can add events to. Events will be saved
 
 Click empty space on any of the hour timeblocks and enter any events you wish. When done, you can click the save button on the right side of each block to save that block's notes for future visits to the application.
 
-The Workday Scheduler can be accessed via GitHub Pages [HERE](https://hdavis147.github.io/Javascript-Quiz/).
+The Workday Scheduler can be accessed via GitHub Pages [HERE](https://hdavis147.github.io/Work-Day-Scheduler/).
 
 ## Credits
 
