@@ -1,35 +1,16 @@
-// Wrap all code that interacts with the DOM in a call to jQuery to ensure that
-// the code isn't run until the browser has finished rendering all the elements
-// in the html.
 $(function () {
-  // TODO: Add a listener for click events on the save button. This code should
-  // use the id in the containing time-block as a key to save the user input in
-  // local storage. HINT: What does `this` reference in the click listener
-  // function? How can DOM traversal be used to get the "hour-x" id of the
-  // time-block containing the button that was clicked? How might the id be
-  // useful when saving the description in local storage?
-  //
-  // TODO: Add code to apply the past, present, or future class to each time
-  // block by comparing the id to the current hour. HINTS: How can the id
-  // attribute of each time-block be used to conditionally add or remove the
-  // past, present, and future classes? How can Day.js be used to get the
-  // current hour in 24-hour time?
-  //
-  // TODO: Add code to get any user input that was saved in localStorage and set
-  // the values of the corresponding textarea elements. HINT: How can the id
-  // attribute of each time-block be used to do this?
-  //
-  // TODO: Add code to display the current date in the header of the page.
+
+  // Gets current date from dayJS and displays it in the currentDay element
   var dateDisplay = $('#currentDay');
   var currentDate = dayjs().format('dddd, MMMM D, YYYY');
   dateDisplay.text(currentDate);
 
-
+  // Gets the hour designated for each time block on the schedule and the current hour via dayJS
   var blockEl = $('.time-block');
   var currentHour = dayjs().format('HH');
   var blockHourArray = $('.hour');
   
-  // Iterates through blockHourArray for each item in the array. 
+  // Iterates through blockHourArray for each item in the array
   for( i=0; i<blockHourArray.length; i++) {
     // Assigns the hour value (text content) of each block to blockHour and removes AM or PM
     var blockHour = blockHourArray[i].textContent;
@@ -41,37 +22,84 @@ $(function () {
     }
     
     // Checks if the hour of the block is less than the current hour (in 24hr time) and assigns the appropriate class based on the result
-    if(blockHour < currentHour) {
+    if(+blockHour < currentHour) {
       blockHourArray[i].parentElement.classList.add("past");
-    } else if (blockHour == currentHour) {
+    } else if (+blockHour == currentHour) {
       blockHourArray[i].parentElement.classList.add("present");
     }
-    else if (blockHour > currentHour){
+    else if (+blockHour > currentHour){
       blockHourArray[i].parentElement.classList.add("future");
     }
   }
 
+  // Function gets the value of each saved item from local storage and sets the appropriate textarea element's value (text) to that saved note item. Runs on page load
+  function renderNotes() {
+    var note9 = localStorage.getItem("note-9");
+    document.getElementById("hour-9").children[1].value = note9;
+    var note10 = localStorage.getItem("note-10");
+    document.getElementById("hour-10").children[1].value = note10;
+    var note11 = localStorage.getItem("note-11");
+    document.getElementById("hour-11").children[1].value = note11;
+    var note12 = localStorage.getItem("note-12");
+    document.getElementById("hour-12").children[1].value = note12;
+    var note1 = localStorage.getItem("note-1");
+    document.getElementById("hour-1").children[1].value = note1;
+    var note2 = localStorage.getItem("note-2");
+    document.getElementById("hour-2").children[1].value = note2;
+    var note3 = localStorage.getItem("note-3");
+    document.getElementById("hour-3").children[1].value = note3;
+    var note4 = localStorage.getItem("note-4");
+    document.getElementById("hour-4").children[1].value = note4;
+    var note5 = localStorage.getItem("note-5");
+    document.getElementById("hour-5").children[1].value = note5;
+  }
+
+  renderNotes();
+
 
   // Function runs once save button is clicked
   function save(event) {
-    console.log("ayo");
+    // Gets id of parent element of clicked button
+    var parentId = this.parentElement.getAttribute('id');
+    // Targets the previous sibling (textarea element) of the clicked button
+    var clickedBlockTextarea = this.previousElementSibling;
+    
+    // Gets the user-entered text of the text area of the clicked time block
+    var textToSave = clickedBlockTextarea.value;
+    
+    // Saves the notes for the clicked button's text area to local storage based on parent div's id attribute
+    switch (parentId) {
+      case "hour-9":
+        localStorage.setItem("note-9", textToSave);
+        break;
+      case "hour-10":
+        localStorage.setItem("note-10", textToSave);
+        break;
+      case "hour-11":
+        localStorage.setItem("note-11", textToSave);
+        break;
+      case "hour-12":
+        localStorage.setItem("note-12", textToSave);
+        break;
+      case "hour-1":
+        localStorage.setItem("note-1", textToSave);
+        break;
+      case "hour-2":
+        localStorage.setItem("note-2", textToSave);
+        break;
+      case "hour-3":
+        localStorage.setItem("note-3", textToSave);
+        break;
+      case "hour-4":
+        localStorage.setItem("note-4", textToSave);
+        break;
+      case "hour-5":
+        localStorage.setItem("note-5", textToSave);
+        break;
+    }
   }
 
   // Listens for clicks on the save button
   blockEl.on('click', '.saveBtn', save);
   
 });
-
-
-// **WHEN I open the planner
-// **THEN the current day is displayed at the top of the calendar
-// **WHEN I scroll down
-// **THEN I am presented with time blocks for standard business hours of 9am to 5pm
-// **WHEN I view the time blocks for that day
-// **THEN each time block is color-coded to indicate whether it is in the past, present, or future
-// WHEN I click into a time block
-// THEN I can enter an event
-// WHEN I click the save button for that time block
-// THEN the text for that event is saved in local storage
-// WHEN I refresh the page
-// THEN the saved events persist
